@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>validate</title>
+    <style>
+        span {
+            color: red;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            event.preventDefault();//to prevent the submission of the form
+
+            //performing the validation
+            var nm = document.getElementById("nm").value;
+            var em = document.getElementById("em").value;
+            var pwd = document.getElementById("pwd").value;
+            var cpwd = document.getElementById("cpwd").value;
+            var genderMale = document.getElementById("male").checked;
+            var genderFemale = document.getElementById("female").checked;
+            var subjectMth = document.getElementById("math").checked;
+            var subjectScience = document.getElementById("science").checked;
+            var subjectEnglish = document.getElementById("english").checked;
+            var location = document.getElementById("loc").value;
+
+            //reseting the error msgs.
+            document.getElementById("nameError").innerHTML = "";
+            document.getElementById("emailError").innerHTML = "";
+            document.getElementById("pwdError").innerHTML = "";
+            document.getElementById("cpwdError").innerHTML = "";
+            document.getElementById("genderError").innerHTML = "";
+            document.getElementById("subjectError").innerHTML = "";
+            document.getElementById("locError").innerHTML = "";
+
+            //validations start here
+            //validating the name
+            if (nm.trim() == "") {
+                document.getElementById("nameError").innerHTML = "name cant be blank";
+                return;
+            }
+            //validating email
+            if (em.trim() == "") {
+                document.getElementById("emailError").innerHTML = "email cant be blank";
+                return;
+            }
+            //validating the password- length > 5
+            if (pwd.length < 5) {
+                document.getElementById("pwdError").innerHTML = "enter pwd between 5 to 10 characters";
+                return;
+            }
+            //validating the password- length < 10
+            if (pwd.length > 10) {
+                document.getElementById("pwdError").innerHTML = "enter pwd between 5 to 10 characters";
+                return;
+            }
+            //validating the password- must contain one lower case letter
+            if (!containsLowercaseLetter(pwd)) {
+                document.getElementById("pwdError").innerHTML = "pwd must contains atleast one lower case letter";
+                return;
+            }
+            //validating the password- must contain one upper case letter
+            if (!containsUppercaseLetter(pwd)) {
+                document.getElementById("pwdError").innerHTML = "pwd must contains atleast one Upper case letter";
+                return;
+            }
+            //validating the password- must contain one digit
+            if (!containsDigit(pwd)) {
+                document.getElementById("pwdError").innerHTML = "pwd must contains atleast one digit";
+                return;
+            }
+            //validating the password- must contain one symbol
+            if (!containsSymbol(pwd)) {
+                document.getElementById("pwdError").innerHTML = "pwd must contains atleast one Symbol";
+                return;
+            }
+            //validating confirm password with the password
+            if (cpwd !== pwd) {
+                document.getElementById("cpwdError").innerHTML = "pwd and cpwd does not matches";
+                return;
+            }
+            //validating the gender
+            if (!genderMale && !genderFemale) {
+                document.getElementById("genderError").innerHTML = "Gender is required";
+                return;
+            }
+            //validating the subjects
+            if (!subjectEnglish && !subjectMth && !subjectScience) {
+                document.getElementById("subjectError").innerHTML = "choose any one subject atleast";
+                return;
+            }
+            // validating the dropdown of the location
+            if (location === "") {
+                document.getElementById("locError").innerHTML = "Choose the location";
+                return;
+            }
+            //form is validated and now reseting the form
+            document.getElementById("registrationFrom").reset();
+        }
+        function containsLowercaseLetter(letter) {
+            for (var i = 0; i < letter.length; i++) {
+                if (letter[i] >= "a" && letter[i] <= "z")
+                    return true;
+            }
+            return false;
+        }
+        function containsUppercaseLetter(letter) {
+            for (var i = 0; i < letter.length; i++) {
+                if (letter[i] >= "A" && letter[i] <= "Z")
+                    return true;
+            }
+            return false;
+        }
+        function containsSymbol(letter) {
+            var symbols = "!@#$%^&*";
+            for (var i = 0; i < letter.length; i++) {
+                if (symbols.includes(letter[i]))
+                    return true;
+            }
+            return false;
+        }
+        function containsDigit(digit) {
+            for (var i = 0; i < digit.length; i++) {
+                if (digit[i] >= "0" && digit[i] <= "10")
+                    return true;
+            }
+            return false;
+        }
+    </script>
+</head>
+
+<body>
+    <form id="registrationFrom" onsubmit="validateForm()">
+        <h1>
+            <b>
+                Student registration Form
+            </b>
+        </h1>
+        <table>
+            <tr>
+                <td>
+                    Name: <input type="text" id="nm" , name="nm" , placeholder="enter the name">
+                    <span id="nameError" class="error">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Email: <input type="text" name="em" id="em" placeholder="Enter the email">
+                    <span id="emailError" class="error">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Password: <input type="password" name="pwd" id="pwd" placeholder="Enter the password">
+                    <span id="pwdError" class="error">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Confirm Password: <input type="password" name="cpwd" id="cpwd" placeholder="Confirm your password">
+                    <span id="cpwdError" class="error">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Gender: <input type="radio" id="male" name="gender" value="male"><label for="male">MALE</label>
+                    &nbsp;&nbsp;
+                    <input type="radio" name="gender" id="female" value="female"> <label for="female">FEMALE</label>
+                    <span id="genderError" class="error">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Subjects: <input type="checkbox" name="subjects" id="math" value="math"> <label
+                        for="math">MATH</label>&nbsp;&nbsp;
+                    <input type="checkbox" name="subjects" id="science" value="science"> <label
+                        for="science">SCIENCE</label>&nbsp;&nbsp;
+                    <input type="checkbox" name="subjects" id="english" value="english"> <label
+                        for="english">ENGLISH</label>
+                    <span id="subjectError" class="error">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Location: <select name="loc" id="loc">
+                        <option value="">Select Location</option>
+                        <option value="pune">pune</option>
+                        <option value="mumbai">mumbai</option>
+                        <option value="jaipur">jaipur</option>
+                    </select>
+                    <span id="locError" class="error">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Register">
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+
+</html>
